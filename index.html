@@ -22,10 +22,22 @@
           -ms-interpolation-mode: nearest-neighbor;    /* IE (non standard naming) */
           image-rendering: pixelated;                  /* Chrome 41 */
         }
+
+        @font-face {
+            font-family: 'Kells';
+            src: url('assets/fonts/kells_uncial.ttf');
+        }
+
+        .fontPreload {
+            font-family: 'Kells';
+            position: absolute;
+            left: -100px;
+        }
     </style>
 </head>
 
 <body style="background-color: black;">
+    <div class="fontPreload">.</div>
 
 <script type="text/javascript" src="./dev/vendor.js"></script><script type="text/javascript" src="./dev/app.js"></script></body>
 </html>
