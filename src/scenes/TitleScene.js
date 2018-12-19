@@ -3,15 +3,38 @@ class TitleScene extends Phaser.Scene {
         super({key: 'TitleScene'});
     }
 
-    preload() {
-        this.load.image('background_image', 'assets/images/battle/background.png');
+    init (data) {
+        this.levelData = data.levelData;
     }
 
     create() {
-        let background = this.add.sprite(0, 0, 'background_image');
-        background.setOrigin(0, 0);
+        this.groups = {};
+        //TODO: lazily generate these instead of pre-specifying?
+        this.levelData.groups.forEach(element => {
+            this.groups[element] = this.add.group();
+        });
 
-        let title_text = this.add.text(100, 100, 'Hello World!');
+        this.sprites = {};
+        //TODO: foreach
+        for (let spriteName in this.levelData.sprites) {
+            let spriteData = this.levelData.sprites[spriteName];
+            let sprite = null;
+            
+            switch (spriteData.type) {
+                case 'sprite':
+                    sprite = this.add.sprite(spriteData.position.x,
+                        spriteData.position.y,
+                        spriteData.texture);
+                    break;
+                case 'text':
+                    sprite = this.add.text(spriteData.position.x, spriteData.position.y,
+                        spriteData.text, spriteData.style);
+                    break;
+            }
+
+            this.sprites[spriteName] = sprite;
+            this.groups[spriteData.group].add(sprite);
+        }
     }
 }
 
