@@ -1,10 +1,12 @@
+import Prefab from '../prefabs/Prefab';
+import TextPrefab from '../prefabs/TextPrefab';
+
 class BaseLevelScene extends Phaser.Scene {
     constructor(key) {
         super({key: key});
     }
 
-    init (data) {
-        this.levelData = data.levelData;
+    init (data) { this.levelData = data.levelData;
     }
 
     create() {
@@ -18,22 +20,8 @@ class BaseLevelScene extends Phaser.Scene {
         //TODO: foreach
         for (let spriteName in this.levelData.sprites) {
             let spriteData = this.levelData.sprites[spriteName];
-            let sprite = null;
-            
-            switch (spriteData.type) {
-                case 'sprite':
-                    sprite = this.add.sprite(spriteData.position.x,
-                        spriteData.position.y,
-                        spriteData.texture);
-                    break;
-                case 'text':
-                    sprite = this.add.text(spriteData.position.x, spriteData.position.y,
-                        spriteData.text, spriteData.style);
-                    break;
-            }
-
-            this.sprites[spriteName] = sprite;
-            this.groups[spriteData.group].add(sprite);
+            let constructorFunction = this.prefabClasses[spriteData.type];
+            let sprite = new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
         }
     }
 }

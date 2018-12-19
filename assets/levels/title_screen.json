@@ -11,24 +11,30 @@
     ],
     "sprites": {
         "background": {
-            "type": "sprite",
+            "type": "background",
             "position": {"x": 320, "y": 240},
-            "texture": "background_image",
-            "group": "background"
+            "properties": {
+                "group": "background",
+                "texture": "background_image"
+            }
         },
         "title_message": {
             "type": "text",
-            "text": "RPG DEMO",
             "position": {"x": 70, "y":100},
-            "style": {"font": "65px Kells", "fill": "#000000"},
-            "group": "texts"
+            "properties": {
+                "group": "texts",
+                "text": "RPG DEMO",
+                "style": {"font": "65px Kells", "fill": "#000000"}
+            }
         },
         "start_message": {
             "type": "text",
-            "text": "Touch/Click to start",
             "position": {"x": 150, "y":200},
-            "style": {"font": "20px Kells", "fill": "#000000"},
-            "group": "texts"
+            "properties": {
+                "group": "texts",
+                "text": "Touch/Click to start",
+                "style": {"font": "20px Kells", "fill": "#000000"}
+            }
         }
 
     }
