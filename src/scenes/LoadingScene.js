@@ -27,13 +27,15 @@ class LoadingScene extends Phaser.Scene {
                         spacing: asset.spacing
                     });
                     break;
+                case 'tilemap':
+                    this.load.tilemapTiledJSON(key, asset.source);
+                    break;
             }
         }
-
     }
 
-    create() {
-        this.scene.start('TitleScene', {levelData: this.levelData});
+    create(data) {
+        this.scene.start(data.scene, {levelData: this.levelData});
     }
 }
 

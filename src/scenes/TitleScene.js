@@ -12,6 +12,17 @@ class TitleScene extends BaseLevelScene {
             text: TextPrefab.prototype.constructor
         }
     }
+
+    update() {
+        if (this.input.activePointer.isDown) {
+            this.startGame();
+        }
+    }
+
+    startGame() {
+        console.log('starting next scene');
+
+    }
 }
 
 export default TitleScene;

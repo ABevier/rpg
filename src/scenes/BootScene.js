@@ -1,5 +1,3 @@
-import { timingSafeEqual } from "crypto";
-
 class BootScene extends Phaser.Scene {
     constructor() {
         super({key: 'BootScene'});
@@ -23,7 +21,10 @@ class BootScene extends Phaser.Scene {
     create(data) {
        let levelData = this.cache.json.get(data.scene); 
        console.log(levelData);
-       this.scene.start('LoadingScene', {levelData: levelData});
+       this.scene.start('LoadingScene', {
+                                            levelData: levelData,
+                                            scene: this.levels[data.scene].key
+                                        });
     }
 }
 
