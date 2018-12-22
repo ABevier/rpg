@@ -6,7 +6,8 @@ class BaseLevelScene extends Phaser.Scene {
         super({key: key});
     }
 
-    init (data) { this.levelData = data.levelData;
+    init (data) { 
+        this.levelData = data.levelData;
     }
 
     create() {

@@ -21,7 +21,7 @@ class TitleScene extends BaseLevelScene {
 
     startGame() {
         console.log('starting next scene');
-
+        this.scene.start('BootScene', {scene: 'town'});
     }
 }
 
