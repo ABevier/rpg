@@ -1,5 +1,5 @@
 import BaseLevelScene from "./BaseLevelScene";
-import Prefab from "../prefabs/Prefab";
+import Player from "../prefabs/world/Player";
 
 class WorldScene extends BaseLevelScene {
     constructor() {
@@ -7,7 +7,7 @@ class WorldScene extends BaseLevelScene {
 
         //TODO: centralize?
         this.prefabClasses = {
-            player: Prefab.prototype.constructor
+            player: Player.prototype.constructor
         }
     }
 

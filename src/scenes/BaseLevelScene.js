@@ -14,7 +14,7 @@ class BaseLevelScene extends Phaser.Scene {
         this.groups = {};
         //TODO: lazily generate these instead of pre-specifying?
         this.levelData.groups.forEach(element => {
-            this.groups[element] = this.add.group();
+            this.groups[element] = this.physics.add.group();
         });
 
         this.sprites = {};
@@ -23,6 +23,14 @@ class BaseLevelScene extends Phaser.Scene {
             let spriteData = this.levelData.sprites[spriteName];
             let constructorFunction = this.prefabClasses[spriteData.type];
             let sprite = new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
+        }
+    }
+
+    update() {
+
+        //TODO:foreach
+        for(let prefabName in this.sprites) {
+            this.sprites[prefabName].update();
         }
     }
 }
