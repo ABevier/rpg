@@ -1,5 +1,6 @@
 import Prefab from '../prefabs/Prefab';
 import TextPrefab from '../prefabs/TextPrefab';
+import UserInput from '../plugins/UserInput';
 
 class BaseLevelScene extends Phaser.Scene {
     constructor(key) {
@@ -24,6 +25,10 @@ class BaseLevelScene extends Phaser.Scene {
             let constructorFunction = this.prefabClasses[spriteData.type];
             let sprite = new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
         }
+
+        this.userInput = new UserInput(this);
+        this.userInputData = this.cache.json.get(this.levelData.userInput.key);
+        this.userInput.setInput(this.userInputData);
     }
 
     update() {

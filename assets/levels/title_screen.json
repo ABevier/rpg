@@ -37,6 +37,9 @@
             }
         }
 
+    },
+    "userInput": {
+        "key": "title_user_input",
+        "path": "assets/user_inputs/title_user_input.json"
     }
-
 }

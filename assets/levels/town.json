@@ -21,5 +21,9 @@
     "map": {
         "key": "level_tilemap",
         "tilesets": ["map_tileset"]
+    },
+    "userInput": {
+        "key": "town_user_input",
+        "path": "assets/user_inputs/world_map_user_input.json"
     }
 }
