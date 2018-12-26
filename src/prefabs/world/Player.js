@@ -96,7 +96,7 @@ class Player extends Prefab {
     }
 
     changeMovement(direction, move) {
-        console.log(`change move: ${direction} - ${move}`)
+        //console.log(`change move: ${direction} - ${move}`)
         this.moving[direction] = move;
     }
 }

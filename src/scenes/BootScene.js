@@ -10,6 +10,10 @@ class BootScene extends Phaser.Scene {
             town: {
                 key: 'WorldScene',
                 path: 'assets/levels/town.json'
+            },
+            cave: {
+                key: 'WorldScene',
+                path: 'assets/levels/cave.json'
             }
         }
     }

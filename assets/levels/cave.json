@@ -1,3 +1,4 @@
+
 {
     "assets": {
         "map_tileset": {
@@ -10,9 +11,9 @@
             "frame_width": 16,
             "frame_height": 16
         },
-        "level_tilemap": {
+        "cave_level_tilemap": {
             "type": "tilemap",
-            "source": "assets/maps/town.json"
+            "source": "assets/maps/cave.json"
         }
     },
     "groups": [
@@ -20,11 +21,11 @@
         "doors"
     ],
     "map": {
-        "key": "level_tilemap",
+        "key": "cave_level_tilemap",
         "tilesets": ["map_tileset"]
     },
     "userInput": {
-        "key": "town_user_input",
+        "key": "cave_user_input",
         "path": "assets/user_inputs/world_map_user_input.json"
     }
 }

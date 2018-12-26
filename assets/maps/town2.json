@@ -72,13 +72,13 @@
                     {
                      "group":"players",
                      "texture":"player_spritesheet",
-                     "walkingSpeed":100
+                     "walking_speed":100
                     },
                  "propertytypes":
                     {
                      "group":"string",
                      "texture":"string",
-                     "walkingSpeed":"int"
+                     "walking_speed":"int"
                     },
                  "rotation":0,
                  "type":"player",
@@ -86,28 +86,28 @@
                  "width":32,
                  "x":288,
                  "y":256
-                },
+                }, 
                 {
-                  "height":32,
-                  "id":2,
-                  "name":"door",
-                  "properties":
-                     {
-                      "group":"doors",
-                      "nextLevel":"cave"
-                     },
-                  "propertytypes":
-                     {
-                      "group":"string",
-                      "nextLevel":"string"
-                     },
-                  "rotation":0,
-                  "type":"door",
-                  "visible":true,
-                  "width":32,
-                  "x":512,
-                  "y":38
-                 }],
+                 "height":32,
+                 "id":2,
+                 "name":"door",
+                 "properties":
+                    {
+                     "group":"doors",
+                     "next_level":"cave"
+                    },
+                 "propertytypes":
+                    {
+                     "group":"string",
+                     "next_level":"string"
+                    },
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":32,
+                 "x":512,
+                 "y":38
+                }],
          "opacity":1,
          "properties":
             {
@@ -123,7 +123,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":2,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
