@@ -36,10 +36,9 @@
                 "style": {"font": "20px Kells", "fill": "#000000"}
             }
         }
-
     },
     "userInput": {
-        "key": "title_user_input",
-        "path": "assets/user_inputs/title_user_input.json"
-    }
+        "title_user_input": "assets/user_inputs/title_user_input.json"
+    },
+    "initialUserInput": "title_user_input"
 }

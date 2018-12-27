@@ -13,6 +13,8 @@ class WorldScene extends BaseLevelScene {
             door: Door.prototype.constructor,
             npc: NPC.prototype.constructor
         }
+
+        this.TEXT_STYLE = {font: '14px Kells', fill: '#ffffff'};
     }
 
     preload() {
@@ -59,6 +61,12 @@ class WorldScene extends BaseLevelScene {
         if (this.prefabClasses.hasOwnProperty(object.type)) {
             let prefab = new this.prefabClasses[object.type](this, object.name, position, object.properties);
         }
+    }
+
+    endTalk() {
+        //TODO: man I need a state manager...
+        this.currentMessageBox.destroy();
+        this.userInput.setInput(this.userInputs.town_user_input);
     }
 
 }

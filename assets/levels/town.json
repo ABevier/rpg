@@ -21,21 +21,27 @@
         "guard_image": {
             "type": "image",
             "source": "assets/images/world/knight.png"
+        },
+        "message_box_image": {
+            "type": "image",
+            "source": "assets/images/world/message_box.png"
         }
     },
     "groups": [
         "players",
         "doors",
-        "npcs"
+        "npcs",
+        "hud"
     ],
     "map": {
         "key": "level_tilemap",
         "tilesets": ["map_tileset"]
     },
     "userInput": {
-        "key": "town_user_input",
-        "path": "assets/user_inputs/world_map_user_input.json"
+        "town_user_input": "assets/user_inputs/world_map_user_input.json",
+        "talking_user_input": "assets/user_inputs/talking_user_input.json"
     },
+    "initialUserInput": "town_user_input",
     "npcMessages": {
         "villagerMessage": "assets/npc_messages/villager_message.txt",
         "guardMessage": "assets/npc_messages/guard_message.txt"

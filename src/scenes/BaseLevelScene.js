@@ -26,8 +26,13 @@ class BaseLevelScene extends Phaser.Scene {
             let sprite = new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
         }
 
+        this.userInputs = {};
+        for (let key in this.levelData.userInput) {
+            this.userInputs[key] = this.cache.json.get(key);
+        }
+
         this.userInput = new UserInput(this);
-        this.userInputData = this.cache.json.get(this.levelData.userInput.key);
+        this.userInputData = this.cache.json.get(this.levelData.initialUserInput);
         this.userInput.setInput(this.userInputData);
     }
 

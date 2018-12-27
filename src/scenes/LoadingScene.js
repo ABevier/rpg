@@ -33,7 +33,9 @@ class LoadingScene extends Phaser.Scene {
             }
         }
 
-        this.load.json(this.levelData.userInput.key, this.levelData.userInput.path);
+        for (let [key, path] of Object.entries(this.levelData.userInput)) {
+            this.load.json(key, path);
+        }
     }
 
     create(data) {
