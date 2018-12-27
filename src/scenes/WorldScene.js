@@ -1,6 +1,7 @@
 import BaseLevelScene from "./BaseLevelScene";
 import Player from "../prefabs/world/Player";
 import Door from "../prefabs/world/Door";
+import NPC from "../prefabs/world/NPC";
 
 class WorldScene extends BaseLevelScene {
     constructor() {
@@ -9,7 +10,15 @@ class WorldScene extends BaseLevelScene {
         //TODO: centralize?
         this.prefabClasses = {
             player: Player.prototype.constructor,
-            door: Door.prototype.constructor
+            door: Door.prototype.constructor,
+            npc: NPC.prototype.constructor
+        }
+    }
+
+    preload() {
+        //TODO: npc messages should be a json object...
+        for (let [key, value] of Object.entries(this.levelData.npcMessages)) {
+            this.load.text(key, value);
         }
     }
 

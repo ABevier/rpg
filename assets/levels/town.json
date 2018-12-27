@@ -13,11 +13,20 @@
         "level_tilemap": {
             "type": "tilemap",
             "source": "assets/maps/town.json"
+        },
+        "villager_image": {
+            "type": "image",
+            "source": "assets/images/world/villager.png"
+        },
+        "guard_image": {
+            "type": "image",
+            "source": "assets/images/world/knight.png"
         }
     },
     "groups": [
         "players",
-        "doors"
+        "doors",
+        "npcs"
     ],
     "map": {
         "key": "level_tilemap",
@@ -26,5 +35,9 @@
     "userInput": {
         "key": "town_user_input",
         "path": "assets/user_inputs/world_map_user_input.json"
+    },
+    "npcMessages": {
+        "villagerMessage": "assets/npc_messages/villager_message.txt",
+        "guardMessage": "assets/npc_messages/guard_message.txt"
     }
 }
