@@ -22,6 +22,10 @@
             "type": "image",
             "source": "assets/images/world/knight.png"
         },
+        "snake_image": {
+            "type": "image",
+            "source": "assets/images/world/snake.png"
+        },
         "message_box_image": {
             "type": "image",
             "source": "assets/images/world/message_box.png"
@@ -31,6 +35,7 @@
         "players",
         "doors",
         "npcs",
+        "enemySpawners",
         "hud"
     ],
     "map": {
