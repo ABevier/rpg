@@ -26,14 +26,17 @@ class BaseLevelScene extends Phaser.Scene {
             let sprite = new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
         }
 
-        this.userInputs = {};
-        for (let key in this.levelData.userInput) {
-            this.userInputs[key] = this.cache.json.get(key);
-        }
+        //TODO: rip all of this out - only use mouse / touch
+        if (this.levelData.userInput) {
+            this.userInputs = {};
+            for (let key in this.levelData.userInput) {
+                this.userInputs[key] = this.cache.json.get(key);
+            }
 
-        this.userInput = new UserInput(this);
-        this.userInputData = this.cache.json.get(this.levelData.initialUserInput);
-        this.userInput.setInput(this.userInputData);
+            this.userInput = new UserInput(this);
+            this.userInputData = this.cache.json.get(this.levelData.initialUserInput);
+            this.userInput.setInput(this.userInputData);
+        }
     }
 
     update() {

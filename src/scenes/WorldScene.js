@@ -2,6 +2,7 @@ import BaseLevelScene from "./BaseLevelScene";
 import Player from "../prefabs/world/Player";
 import Door from "../prefabs/world/Door";
 import NPC from "../prefabs/world/NPC";
+import EnemySpawner from "../prefabs/world/EnemySpawner";
 
 class WorldScene extends BaseLevelScene {
     constructor() {
@@ -11,7 +12,8 @@ class WorldScene extends BaseLevelScene {
         this.prefabClasses = {
             player: Player.prototype.constructor,
             door: Door.prototype.constructor,
-            npc: NPC.prototype.constructor
+            npc: NPC.prototype.constructor,
+            enemySpawner: EnemySpawner.prototype.constructor
         }
 
         this.TEXT_STYLE = {font: '14px Kells', fill: '#ffffff'};
