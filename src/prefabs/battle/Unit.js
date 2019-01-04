@@ -71,6 +71,10 @@ class Unit extends Prefab {
         }
     }
 
+    calculateActTurn(currentTurn) {
+        this.actTurn = currentTurn + Math.ceil(100 / this.stats.speed);
+    }
+
     //TODO: move to a common place?  
     addAnimation(name, animProperties, shouldRepeat) {
         if (!this.scene.anims.anims.has(name)) {

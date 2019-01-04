@@ -19,11 +19,10 @@ class BaseLevelScene extends Phaser.Scene {
         });
 
         this.sprites = {};
-        //TODO: foreach
-        for (let spriteName in this.levelData.sprites) {
-            let spriteData = this.levelData.sprites[spriteName];
-            let constructorFunction = this.prefabClasses[spriteData.type];
-            let sprite = new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
+        if (this.levelData.sprites) {
+            for (let [spriteName, spriteData] of Object.entries(this.levelData.sprites)) {
+                this.createPrefab(spriteName, spriteData);
+            }
         }
 
         //TODO: rip all of this out - only use mouse / touch
@@ -37,6 +36,11 @@ class BaseLevelScene extends Phaser.Scene {
             this.userInputData = this.cache.json.get(this.levelData.initialUserInput);
             this.userInput.setInput(this.userInputData);
         }
+    }
+
+    createPrefab(spriteName, spriteData) {
+        let constructorFunction = this.prefabClasses[spriteData.type];
+        return new constructorFunction(this, spriteName, spriteData.position, spriteData.properties);
     }
 
     update() {

@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "phaser": "3.15.0",
-    "phaser-animated-tiles": "^2.0.2"
+    "phaser-animated-tiles": "^2.0.2",
+    "js-priority-queue": "0.1.5"
   }
 }
