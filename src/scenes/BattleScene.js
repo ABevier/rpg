@@ -4,6 +4,10 @@ import Unit from "../prefabs/battle/Unit";
 import PriorityQueue from "js-priority-queue"
 import MenuItem from "../prefabs/HUD/MenuItem";
 import Menu from "../prefabs/HUD/Menu";
+import PlayerUnit from "../prefabs/battle/PlayerUnit";
+import EnemyUnit from "../prefabs/battle/EnemyUnit";
+import PhysicalAttackMenuItem from "../prefabs/HUD/PhysicalAttackMenuItem";
+import EnemyMenuItem from "../prefabs/HUD/EnemyMenuItem";
 
 class BattleScene extends BaseLevelScene {
     constructor() {
@@ -11,10 +15,12 @@ class BattleScene extends BaseLevelScene {
 
         this.prefabClasses = {
            background: Prefab.prototype.constructor, 
-           playerUnit: Unit.prototype.constructor,
-           enemyUnit: Unit.prototype.constructor,
+           playerUnit: PlayerUnit.prototype.constructor,
+           enemyUnit: EnemyUnit.prototype.constructor,
            menu: Menu.prototype.constructor,
-           menuItem: MenuItem.prototype.constructor
+           menuItem: MenuItem.prototype.constructor,
+           physicalAttackMenuItem: PhysicalAttackMenuItem.prototype.constructor,
+           enemyMenuItem: EnemyMenuItem.prototype.constructor
         }
 
         this.random = new Phaser.Math.RandomDataGenerator();
@@ -40,7 +46,6 @@ class BattleScene extends BaseLevelScene {
         }, this);
 
         console.log(this.units);
-        this.sprites.actionsMenu.setEnabled(true);
 
         this.nextTurn();
     }

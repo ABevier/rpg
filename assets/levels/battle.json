@@ -35,6 +35,7 @@
     },
     "groups": [
         "hud",
+        "attacks",
         "background",
         "playerUnits",
         "enemyUnits"
@@ -197,7 +198,7 @@
                 "group": "hud",
                 "menuItems": {
                     "attack": {
-                        "type": "menuItem",
+                        "type": "physicalAttackMenuItem",
                         "position": {"x": 210, "y": 360},
                         "properties": {
                             "group": "hud",
@@ -246,23 +247,25 @@
                 "group": "hud",
                 "menuItems": {
                     "snake1Item": {
-                        "type": "menuItem",
+                        "type": "enemyMenuItem",
                         "position": {"x": 10, "y": 350},
                         "properties": {
                             "group": "hud",
                             "texture": "snake_face_image",
                             "anchor": {"x": 0, "y": 0},
-                            "scale": {"x": 0.5, "y": 0.5}
+                            "scale": {"x": 0.5, "y": 0.5},
+                            "enemyName": "snake1"
                         }
                     },
                     "snake2Item": {
-                        "type": "menuItem",
+                        "type": "enemyMenuItem",
                         "position": {"x": 60, "y": 350},
                         "properties": {
                             "group": "hud",
                             "texture": "snake_face_image",
                             "anchor": {"x": 0, "y": 0},
-                            "scale": {"x": 0.5, "y": 0.5}
+                            "scale": {"x": 0.5, "y": 0.5},
+                            "enemyName": "snake2"
                         }
                     }
                 }

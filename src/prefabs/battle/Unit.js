@@ -19,42 +19,14 @@ class Unit extends Prefab {
         this.targetUnits = properties.targetUnits;
     }
 
-    onAnimationComplete() {
+    onAnimationComplete(animation) {
         this.anims.play(this.name + '_idle');
-    }
 
-    act() {
-        let target = this.chooseTarget();
-
-        let attackMultipler = this.scene.random.realInRange(0.8, 1.2);
-        let defenseMultipler = this.scene.random.realInRange(0.8, 1.2);
-
-        let attackValue = this.stats.attack * attackMultipler;
-        let defenseValue = target.stats.defense * defenseMultipler;
-
-        let damage = Math.max(0, Math.round(attackValue - defenseValue));
-
-        target.receiveDamage(damage);
-
-        this.anims.play(this.name + '_attack1');
-    }
-
-    chooseTarget() {
-        const targetGroup = this.scene.groups[this.targetUnits];
-        let targetIndex = this.scene.random.between(0, targetGroup.countActive() - 1);
-
-        let target = null;
-        let aliveUnitCount = 0;
-        targetGroup.children.iterate(function(unit) {
-            if (unit.active) {
-                if (aliveUnitCount === targetIndex) {
-                    target = unit;
-                }
-                aliveUnitCount++;
-            }
-        }, this);
-
-        return target;
+        //TODO: this is gross
+        if (animation.key === this.name + '_attack1' || animation.key === this.name + '_attack2') {
+            console.log(animation);
+            this.scene.nextTurn();
+        }
     }
 
     receiveDamage(damage) {
