@@ -1,6 +1,6 @@
 import Prefab from "../Prefab";
 
-class Attack extends Prefab {
+class PhysicalAttack extends Prefab {
     constructor(scene, name, position, properties) {
         super(scene, name, position, properties);
 
@@ -23,4 +23,4 @@ class Attack extends Prefab {
     }
 }
 
-export default Attack;
+export default PhysicalAttack;

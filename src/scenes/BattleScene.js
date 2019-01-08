@@ -8,6 +8,8 @@ import PlayerUnit from "../prefabs/battle/PlayerUnit";
 import EnemyUnit from "../prefabs/battle/EnemyUnit";
 import PhysicalAttackMenuItem from "../prefabs/HUD/PhysicalAttackMenuItem";
 import EnemyMenuItem from "../prefabs/HUD/EnemyMenuItem";
+import MagicalAttackMenuItem from "../prefabs/HUD/MagicalAttackMenuItem";
+import RunMenuItem from "../prefabs/HUD/RunMenuItem";
 
 class BattleScene extends BaseLevelScene {
     constructor() {
@@ -20,6 +22,8 @@ class BattleScene extends BaseLevelScene {
            menu: Menu.prototype.constructor,
            menuItem: MenuItem.prototype.constructor,
            physicalAttackMenuItem: PhysicalAttackMenuItem.prototype.constructor,
+           magicalAttackMenuItem: MagicalAttackMenuItem.prototype.constructor,
+           runMenuItem: RunMenuItem.prototype.constructor,
            enemyMenuItem: EnemyMenuItem.prototype.constructor
         }
 
@@ -62,6 +66,10 @@ class BattleScene extends BaseLevelScene {
         } else {
             this.nextTurn();
         }
+    }
+
+    backToWorld() {
+        this.scene.start('BootScene', {scene: 'town'});
     }
 
 }

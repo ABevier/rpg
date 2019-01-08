@@ -1,5 +1,5 @@
 import MenuItem from "./MenuItem";
-import Attack from "../battle/Attack";
+import PhysicalAttack from "../battle/PhysicalAttack";
 
 class PhysicalAttackMenuItem extends MenuItem {
     constructor(scene, name, position, properties) {
@@ -7,7 +7,7 @@ class PhysicalAttackMenuItem extends MenuItem {
     }
 
     select() {
-        this.scene.currentAttack = new Attack(
+        this.scene.currentAttack = new PhysicalAttack(
             this.scene,
             this.scene.currentUnit.name + '_attack',
             {x: 0, y: 0},

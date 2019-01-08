@@ -1,12 +1,12 @@
-import Attack from "./Attack";
 import Unit from "./Unit";
+import PhysicalAttack from "./PhysicalAttack";
 
 class EnemyUnit extends Unit {
 
     constructor(scene, name, position, properties) {
         super(scene, name, position, properties);
 
-        this.attack = new Attack(
+        this.attack = new PhysicalAttack(
             this.scene,
             this.name + '_attack',
             {x: 0, y: 0},

@@ -208,7 +208,7 @@
                         }
                     },
                     "magic": {
-                        "type": "menuItem",
+                        "type": "magicalAttackMenuItem",
                         "position": {"x": 250, "y": 360},
                         "properties": {
                             "group": "hud",
@@ -228,13 +228,14 @@
                         }
                     },
                     "run": {
-                        "type": "menuItem",
+                        "type": "runMenuItem",
                         "position": {"x": 330, "y": 360},
                         "properties": {
                             "group": "hud",
                             "texture": "icons_spritesheet",
                             "frame": 11,
-                            "anchor": {"x": 0, "y": 0}
+                            "anchor": {"x": 0, "y": 0},
+                            "runChance": 0.5
                         }
                     }
                 }
