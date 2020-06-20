@@ -1,38 +1,54 @@
 import 'phaser';
+import { Battle } from './battle';
 
-export default class Demo extends Phaser.Scene
-{
-    constructor ()
-    {
+export default class Demo extends Phaser.Scene {
+    constructor () {
         super('demo');
     }
 
-    preload ()
-    {
-        this.load.image('logo', 'assets/phaser3-logo.png');
-        this.load.image('libs', 'assets/libs.png');
-        this.load.glsl('bundle', 'assets/plasma-bundle.glsl.js');
-        this.load.glsl('stars', 'assets/starfields.glsl.js');
+    private battle = new Battle();
+
+    preload() {
     }
 
-    create ()
-    {
-        this.add.shader('RGB Shift Field', 0, 0, 800, 600).setOrigin(0);
+    create() {
+        this.battle.players.forEach((battler, i) => {
+            let x = 100 + 60 * i;
+            let battlerSprite = this.add.rectangle(x, 400, 40, 20, 0x00ff00);
+            battlerSprite.setOrigin(0, 0);
 
-        this.add.shader('Plasma', 0, 412, 800, 172).setOrigin(0);
+            let txt = this.add.text(x, 400, battler.name);
+            txt.setOrigin(0, 0);
+        });
+        
+        this.battle.enemies.forEach((battler, i) => {
+            let x = 100 + 60 * i;
+            let battlerSprite = this.add.rectangle(x, 200, 40, 20, 0xff0000);
+            battlerSprite.setOrigin(0, 0);
 
-        this.add.image(400, 300, 'libs');
+            let txt = this.add.text(x, 200, battler.name);
+            txt.setOrigin(0, 0);
+        });
 
-        const logo = this.add.image(400, 70, 'logo');
+        this.battleLoop();
+    }
 
-        this.tweens.add({
-            targets: logo,
-            y: 350,
-            duration: 1500,
-            ease: 'Sine.inOut',
-            yoyo: true,
-            repeat: -1
-        })
+    async battleLoop() {
+        console.log("start work");
+        const result = await this.showMenu();
+        console.log("clicked on " + result);
+    }
+
+    showMenu(): Promise<Number> {
+        return new Promise<Number>((resolve, reject) => {
+            for (let i = 0; i < 3; i++) {
+                const idx = i;
+                const x = 20 + i * 40;
+                let btn = this.add.rectangle(x, 20, 20, 20, 0x0000ff);
+                btn.setInteractive();
+                btn.on('pointerdown', () => resolve(idx));
+            }
+        });
     }
 }
 
