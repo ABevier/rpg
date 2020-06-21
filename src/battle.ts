@@ -20,10 +20,10 @@ export class Command {
 
 export class Battler {
 
-    public CombatActions: Array<CombatAction>
+    public combatActions: Array<CombatAction>
 
-    constructor(public name: string, public hp: number) {
-        this.CombatActions = [new CombatAction("Attack"), new CombatAction("Magic"), new CombatAction("Item")]
+    constructor(public name: string, public hp: number, public isPlayer: boolean) {
+        this.combatActions = [new CombatAction("Attack"), new CombatAction("Magic"), new CombatAction("Item")]
     }
 
 }
@@ -37,8 +37,8 @@ export class Battle {
     public enemies: Array<Battler>;
 
     constructor() {
-        this.players = [new Battler("1", 100), new Battler("2", 100)];
-        this.enemies = [new Battler("3", 100), new Battler("4", 100)];
+        this.players = [new Battler("1", 100, true), new Battler("2", 100, true)];
+        this.enemies = [new Battler("3", 100, false), new Battler("4", 100, false)];
 
         this.allUnits = [...this.players, ...this.enemies]
     }
