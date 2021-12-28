@@ -6,7 +6,8 @@
     "sourceType": "module"
   },
   "rules": {
-    "semi": ["error", "always"],
+    "semi": "off",
+    "@typescript-eslint/semi": ["error", "always"],
     "quotes": ["error", "double"],
     "no-param-reassign": ["error", { "props": true }],
     "@typescript-eslint/no-shadow": "error",

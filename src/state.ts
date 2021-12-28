@@ -1,29 +1,37 @@
 import { option } from "fp-ts";
-import { findFirst, reduce } from "fp-ts/Array";
+import { reduce } from "fp-ts/Array";
 import { pipe } from "fp-ts/lib/function";
-import { getMonoid } from "fp-ts/lib/Option";
-import { last } from "fp-ts/lib/Semigroup";
+import { lookup, upsertAt } from "fp-ts/Record";
 import { Actor } from "./actor";
 import { Command, CommandResult } from "./commands/command";
 
 type Option<V> = option.Option<V>;
 
 export interface State {
-  heroes: Actor[];
-  enemies: Actor[];
+  actors: Record<string, Actor>;
 }
 
-//TODO: keep a map?
-const lookupActorById = (state: State, id: string): Option<Actor> => {
-  const find = findFirst((a: Actor) => a.id === id);
-  const maybeInHeroes = pipe(state.heroes, find);
-  const maybeInEnemies = pipe(state.enemies, find);
-
-  // This is kind of ugly - using a semigroup combiner that remembers the last some(value)
-  // and then concating them
-  const M = getMonoid<Actor>(last());
-  return M.concat(maybeInHeroes, maybeInEnemies);
+const newBattleState = (heroes: Actor[], enemies: Actor[]): State => {
+  const reducer = (acc: Record<string, Actor>, actor: Actor) => pipe(acc, upsertAt(actor.id, actor));
+  const actors = [...heroes, ...enemies].reduce(reducer, {});
+  return { actors };
 };
+
+const lookupActorById = (state: State, id: string): Option<Actor> => {
+  return pipe(state.actors, lookup(id));
+};
+
+//TODO: keep a map?
+// const lookupActorById = (state: State, id: string): Option<Actor> => {
+//   const find = findFirst((a: Actor) => a.id === id);
+//   const maybeInHeroes = pipe(state.heroes, find);
+//   const maybeInEnemies = pipe(state.enemies, find);
+
+//   // This is kind of ugly - using a semigroup combiner that remembers the last some(value)
+//   // and then concating them
+//   const M = getMonoid<Actor>(last());
+//   return M.concat(maybeInHeroes, maybeInEnemies);
+// };
 
 export interface RoundResult {
   state: State;
@@ -39,4 +47,8 @@ const applyCommands = (state: State, commands: Command[]): RoundResult => {
   return pipe(commands, reduce({ state, results: [] }, reducer));
 };
 
-export const State = { lookupActorById, applyCommands };
+export const State = {
+  newBattleState,
+  lookupActorById,
+  applyCommands,
+};
