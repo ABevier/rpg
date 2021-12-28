@@ -1,6 +1,6 @@
 import { option } from "fp-ts";
 import { pipe } from "fp-ts/lib/function";
-import { reverse, sequence, sort } from "fp-ts/Array";
+import { reverse, sort } from "fp-ts/Array";
 import * as N from "fp-ts/number";
 import { contramap } from "fp-ts/Ord";
 import { State } from "../state";
@@ -20,7 +20,9 @@ export interface CommandResult {
   text: string;
 }
 
-export type CommandFunc = (state: State, source: Actor, target: Actor) => CommandResult;
+//TODO: targetId can be an actor id, a row id, or maybe other things
+export type CommandFunc = (state: State, source: Actor, targetId: string) => CommandResult;
+
 export type CommandMap = Record<CommandType, CommandFunc>;
 
 const commands: CommandMap = {
@@ -28,16 +30,25 @@ const commands: CommandMap = {
 };
 
 const executeCommand = (state: State, command: Command): CommandResult => {
-  const actors = [State.lookupActorById(state, command.sourceId), State.lookupActorById(state, command.targetId)];
-
   return pipe(
-    actors,
-    //TODO: understand applicative better
-    sequence(option.Applicative),
-    option.map(([source, target]) => commands[command.type](state, source, target)),
-    option.getOrElse(() => ({ state, text: "ERROR: actor is not found" }))
+    State.lookupActorById(state, command.sourceId),
+    option.filter(Actor.isAlive),
+    option.map((actor) => commands[command.type](state, actor, command.targetId)),
+    option.getOrElse(() => ({ state, text: `Actor id: ${command.sourceId} cannot act` }))
   );
 };
+
+// const executeCommand = (state: State, command: Command): CommandResult => {
+//   const actors = [State.lookupActorById(state, command.sourceId), State.lookupActorById(state, command.targetId)];
+
+//   return pipe(
+//     actors,
+//     //TODO: understand applicative better
+//     sequence(option.Applicative),
+//     option.map(([source, target]) => commands[command.type](state, source, target)),
+//     option.getOrElse(() => ({ state, text: "ERROR: actor is not found" }))
+//   );
+// };
 
 //TODO: understand contramap better (it's like mapping on the back half?)
 const bySpeed = pipe(

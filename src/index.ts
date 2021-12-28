@@ -4,21 +4,21 @@ import { State } from "./state";
 
 const state = State.newBattleState(
   [
-    { id: "1", hp: 200 },
+    { id: "1", hp: 29 },
     { id: "2", hp: 100 },
     { id: "3", hp: 150 },
   ],
   [
-    { id: "e1", hp: 30 },
-    { id: "e2", hp: 30 },
-    { id: "e3", hp: 30 },
+    { id: "e1", hp: 80 },
+    { id: "e2", hp: 28 },
+    { id: "e3", hp: 80 },
   ]
 );
 
 const commands = [
   { speed: 10, sourceId: "1", targetId: "e1", type: "attack" as CommandType },
   { speed: 3, sourceId: "2", targetId: "e2", type: "attack" as CommandType },
-  { speed: 5, sourceId: "3", targetId: "e1", type: "attack" as CommandType },
+  { speed: 5, sourceId: "3", targetId: "e2", type: "attack" as CommandType },
   { speed: 14, sourceId: "e1", targetId: "1", type: "attack" as CommandType },
 ];
 const c = Command.sortBySpeed(commands);

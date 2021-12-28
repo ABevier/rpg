@@ -21,6 +21,11 @@ const lookupActorById = (state: State, id: string): Option<Actor> => {
   return pipe(state.actors, lookup(id));
 };
 
+const updateActor = (state: State, actor: Actor): State => {
+  const actors = pipe(state.actors, upsertAt(actor.id, actor));
+  return { ...state, actors };
+};
+
 //TODO: keep a map?
 // const lookupActorById = (state: State, id: string): Option<Actor> => {
 //   const find = findFirst((a: Actor) => a.id === id);
@@ -40,7 +45,7 @@ export interface RoundResult {
 
 const applyCommands = (state: State, commands: Command[]): RoundResult => {
   const reducer = (acc: RoundResult, c: Command): RoundResult => {
-    const result = Command.executeCommand(state, c);
+    const result = Command.executeCommand(acc.state, c);
     return { state: result.state, results: [...acc.results, result] };
   };
 
@@ -50,5 +55,6 @@ const applyCommands = (state: State, commands: Command[]): RoundResult => {
 export const State = {
   newBattleState,
   lookupActorById,
+  updateActor,
   applyCommands,
 };
