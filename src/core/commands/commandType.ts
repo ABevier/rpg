@@ -1,4 +1,4 @@
 export enum CommandType {
-  Attack = "attack",
+  Attack = 'attack',
   //Skill = "skill",
 }
