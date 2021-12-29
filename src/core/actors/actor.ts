@@ -1,6 +1,12 @@
+export enum Team {
+  Player = 'player',
+  Enemy = 'enemy',
+}
+
 export interface Actor {
   id: string
   name: string
+  team: Team
   hp: number
   maxHp: number
 }

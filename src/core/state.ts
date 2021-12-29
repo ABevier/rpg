@@ -1,8 +1,7 @@
-import { option } from 'fp-ts'
-import { reduce } from 'fp-ts/Array'
+import { option, record, string, array } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
 import { lookup, upsertAt } from 'fp-ts/Record'
-import { Actor } from './actors/actor'
+import { Actor, Team } from './actors/actor'
 import { Command, CommandResult } from './commands/command'
 
 type Option<V> = option.Option<V>
@@ -13,7 +12,7 @@ export interface State {
 
 const newBattleState = (heroes: Actor[], enemies: Actor[]): State => {
   const reducer = (acc: Record<string, Actor>, actor: Actor) => pipe(acc, upsertAt(actor.id, actor))
-  const actors = [...heroes, ...enemies].reduce(reducer, {})
+  const actors = pipe([...heroes, ...enemies], array.reduce({}, reducer))
   return { actors }
 }
 
@@ -24,6 +23,16 @@ const lookupActorById = (state: State, id: string): Option<Actor> => {
 const updateActor = (state: State, actor: Actor): State => {
   const actors = pipe(state.actors, upsertAt(actor.id, actor))
   return { ...state, actors }
+}
+
+const getPlayerActors = (state: State): Actor[] => {
+  //TODO: util class collectFilter or something
+  const collectValues = pipe((_key: string, value: Actor) => value, record.collect(string.Ord))
+  return pipe(
+    state.actors,
+    collectValues,
+    array.filter((actor) => actor.team === Team.Player),
+  )
 }
 
 //TODO: keep a map?
@@ -49,12 +58,13 @@ const applyCommands = (state: State, commands: Command[]): RoundResult => {
     return { state: result.state, results: [...acc.results, result] }
   }
 
-  return pipe(commands, reduce({ state, results: [] }, reducer))
+  return pipe(commands, array.reduce({ state, results: [] }, reducer))
 }
 
 export const State = {
   newBattleState,
   lookupActorById,
   updateActor,
+  getPlayerActors,
   applyCommands,
 }

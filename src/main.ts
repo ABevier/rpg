@@ -6,6 +6,12 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 
   type: Phaser.AUTO,
 
+  antialias: false,
+
+  render: {
+    antialias: false,
+  },
+
   scale: {
     width: window.innerWidth,
     height: window.innerHeight,

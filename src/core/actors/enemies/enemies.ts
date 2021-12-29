@@ -1,4 +1,4 @@
-import { Actor } from '../actor'
+import { Actor, Team } from '../actor'
 
 export enum EnemyType {
   Goblin = 'goblin',
@@ -23,6 +23,7 @@ const newEnemyActor = (id: string, type: EnemyType): Actor => {
   return {
     id,
     hp: spec.maxHp,
+    team: Team.Enemy,
     ...spec,
   }
 }
