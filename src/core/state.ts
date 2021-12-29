@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/lib/function'
 import { lookup, upsertAt } from 'fp-ts/Record'
 import { Actor, Team } from './actors/actor'
 import { Command, CommandResult } from './commands/command'
+import { Dictionary } from './utils/dictionary'
 
 type Option<V> = option.Option<V>
 
@@ -26,13 +27,11 @@ const updateActor = (state: State, actor: Actor): State => {
 }
 
 const getPlayerActors = (state: State): Actor[] => {
-  //TODO: util class collectFilter or something
-  const collectValues = pipe((_key: string, value: Actor) => value, record.collect(string.Ord))
-  return pipe(
-    state.actors,
-    collectValues,
-    array.filter((actor) => actor.team === Team.Player),
-  )
+  return Dictionary.collectAndFilter(state.actors, (actor) => actor.team === Team.Player)
+}
+
+const getEnemyActors = (state: State): Actor[] => {
+  return Dictionary.collectAndFilter(state.actors, (actor) => actor.team === Team.Enemy)
 }
 
 //TODO: keep a map?
@@ -66,5 +65,6 @@ export const State = {
   lookupActorById,
   updateActor,
   getPlayerActors,
+  getEnemyActors,
   applyCommands,
 }

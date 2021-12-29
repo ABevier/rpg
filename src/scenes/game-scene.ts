@@ -1,7 +1,7 @@
-import { option } from 'fp-ts'
 import { Team } from '../core/actors/actor'
 import { Enemies, EnemyType } from '../core/actors/enemies/enemies'
 import { State } from '../core/state'
+import { PlayerDisplay } from './PlayerDisplay'
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -37,19 +37,14 @@ export class GameScene extends Phaser.Scene {
     const playerActors = State.getPlayerActors(state)
 
     playerActors.forEach((actor, idx) => {
-      //TODO: another function
-      const container = this.add.container(100 + idx * 250, 100)
-      const background = new Phaser.GameObjects.Rectangle(this, 0, 0, 200, 80, 0x0000ff).setOrigin(0, 0)
-      container.add(background)
+      const display = PlayerDisplay.newPlayerDisplay(this, idx, 1)
+      PlayerDisplay.updateDisplay(display, actor)
+    })
 
-      const textStyle = { font: '22px Courier', color: '#DCDCDC' }
-
-      const nameLabel = new Phaser.GameObjects.Text(this, 10, 10, actor.name, textStyle).setOrigin(0, 0)
-      container.add(nameLabel)
-
-      const hpText = `HP: ${actor.hp}/${actor.maxHp}`
-      const hpLabel = new Phaser.GameObjects.Text(this, 10, 30, hpText, textStyle).setOrigin(0, 0)
-      container.add(hpLabel)
+    const enemyActors = State.getEnemyActors(state)
+    enemyActors.forEach((actor, idx) => {
+      const display = PlayerDisplay.newPlayerDisplay(this, idx, 0)
+      PlayerDisplay.updateDisplay(display, actor)
     })
   }
 }
