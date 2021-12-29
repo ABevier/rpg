@@ -4,9 +4,9 @@ import { reverse, sort } from "fp-ts/Array";
 import * as N from "fp-ts/number";
 import { contramap } from "fp-ts/Ord";
 import { State } from "../state";
-import { Actor } from "../actor";
 import { Attack } from "./attack";
 import { CommandType } from "./commandType";
+import { Actor } from "../actors/actor";
 
 export interface Command {
   speed: number;

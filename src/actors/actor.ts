@@ -1,6 +1,8 @@
 export interface Actor {
   id: string;
+  name: string;
   hp: number;
+  maxHp: number;
 }
 
 const applyDamage = (actor: Actor, amount: number): Actor => {

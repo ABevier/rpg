@@ -1,17 +1,18 @@
+import { Enemies, EnemyType } from "./actors/enemies/enemies";
 import { Command } from "./commands/command";
 import { CommandType } from "./commands/commandType";
 import { State } from "./state";
 
 const state = State.newBattleState(
   [
-    { id: "1", hp: 29 },
-    { id: "2", hp: 100 },
-    { id: "3", hp: 150 },
+    { id: "1", name: "Bob", hp: 29, maxHp: 120 },
+    { id: "2", name: "Alice", hp: 100, maxHp: 120 },
+    { id: "3", name: "Eugene", hp: 150, maxHp: 150 },
   ],
   [
-    { id: "e1", hp: 80 },
-    { id: "e2", hp: 28 },
-    { id: "e3", hp: 80 },
+    Enemies.newEnemyActor("e1", EnemyType.Goblin),
+    { ...Enemies.newEnemyActor("e2", EnemyType.Goblin), hp: 28 },
+    Enemies.newEnemyActor("e3", EnemyType.Goblin),
   ]
 );
 

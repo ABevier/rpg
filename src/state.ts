@@ -2,7 +2,7 @@ import { option } from "fp-ts";
 import { reduce } from "fp-ts/Array";
 import { pipe } from "fp-ts/lib/function";
 import { lookup, upsertAt } from "fp-ts/Record";
-import { Actor } from "./actor";
+import { Actor } from "./actors/actor";
 import { Command, CommandResult } from "./commands/command";
 
 type Option<V> = option.Option<V>;
