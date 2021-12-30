@@ -1,6 +1,6 @@
 import { Actor } from '../core/actors/actor'
 
-interface PlayerDisplay {
+export interface PlayerDisplay {
   container: Phaser.GameObjects.Container
   nameLabel: Phaser.GameObjects.Text
   hpLabel: Phaser.GameObjects.Text
