@@ -4,12 +4,17 @@ import { Actor, Team } from '../core/actors/actor'
 import { Enemies, EnemyType } from '../core/actors/enemies/enemies'
 import { State } from '../core/state'
 import { Dictionary } from '../core/utils/dictionary'
+import { Menu } from '../ui/menu'
 import { PlayerDisplay } from './PlayerDisplay'
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
   key: 'Game',
+}
+
+interface UIState {
+  playerDisplays: Record<string, PlayerDisplay>
 }
 
 export class GameScene extends Phaser.Scene {
@@ -31,33 +36,41 @@ export class GameScene extends Phaser.Scene {
       ],
     )
 
-    const initialUI: Record<string, PlayerDisplay> = {}
+    const initialUI: UIState = { playerDisplays: {} }
     const newUIState = this.renderBattle(state, initialUI)
     console.log(newUIState)
+
+    this.driver(this)
+  }
+
+  private driver = async (scene: Phaser.Scene): Promise<void> => {
+    const value = await Menu.showMenu(scene)
+    console.log(`menu clicked with value ${value}`)
   }
 
   //public update(): void {}
 
-  //TODO: there is some ugliness in here, not sure how much I like it
-  // There has to be a cool pipe trick here or something. refactor this later
-  public renderBattle(state: State, uiState: Record<string, PlayerDisplay>): Record<string, PlayerDisplay> {
-    const updatePlayerDisplay = this.updateDisplayState(this, 1)
-    const playerActors = State.getPlayerActors(state)
-    let newUIState = pipe(playerActors, array.reduceWithIndex(uiState, updatePlayerDisplay))
+  //TODO: Move this code out to a renderer or something, all the `this`'s are killing me
+  public renderBattle(state: State, uiState: UIState): UIState {
+    return pipe(uiState, this.renderPlayers(this, state), this.renderEnemies(this, state))
+  }
 
-    const updateEnemyDisplay = this.updateDisplayState(this, 0)
-    const enemyActors = State.getEnemyActors(state)
-    newUIState = pipe(enemyActors, array.reduceWithIndex(newUIState, updateEnemyDisplay))
+  private renderPlayers = (scene: Phaser.Scene, state: State) => (uiState: UIState) => {
+    return pipe(State.getPlayerActors(state), array.reduceWithIndex(uiState, this.updateDisplayState(scene, 1)))
+  }
 
-    return newUIState
+  private renderEnemies = (scene: Phaser.Scene, state: State) => (uiState: UIState) => {
+    return pipe(State.getEnemyActors(state), array.reduceWithIndex(uiState, this.updateDisplayState(scene, 0)))
   }
 
   private updateDisplayState =
     (scene: Phaser.Scene, row: number) =>
-    (idx: number, uiState: Record<string, PlayerDisplay>, actor: Actor): Record<string, PlayerDisplay> => {
+    (idx: number, uiState: UIState, actor: Actor): UIState => {
       const supplier = () => PlayerDisplay.newPlayerDisplay(scene, idx, row)
-      const [newUiState, display] = Dictionary.getOrCreate(uiState, actor.id, supplier)
+      const [playerDisplays, display] = Dictionary.getOrCreate(uiState.playerDisplays, actor.id, supplier)
+
       PlayerDisplay.updateDisplay(display, actor)
-      return newUiState
+
+      return { ...uiState, playerDisplays }
     }
 }
