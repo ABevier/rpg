@@ -13,7 +13,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   key: 'Game',
 }
 
-interface UIState {
+export interface UIState {
   playerDisplays: Record<string, PlayerDisplay>
 }
 
@@ -40,12 +40,19 @@ export class GameScene extends Phaser.Scene {
     const newUIState = this.renderBattle(state, initialUI)
     console.log(newUIState)
 
-    this.driver(this)
+    this.driver(this, newUIState)
   }
 
-  private driver = async (scene: Phaser.Scene): Promise<void> => {
-    const value = await Menu.showMenu(scene)
+  private driver = async (scene: Phaser.Scene, uiState: UIState): Promise<void> => {
+    const value = await Menu.getMenuSelection(scene, [
+      { text: '1', value: 1 },
+      { text: '2', value: 2 },
+      { text: '3', value: 3 },
+    ])
     console.log(`menu clicked with value ${value}`)
+
+    const targetId = await Menu.getEnemyClick(uiState)
+    console.log(`selected target = ${targetId}`)
   }
 
   //public update(): void {}
@@ -72,7 +79,8 @@ export class GameScene extends Phaser.Scene {
   private updateDisplayState =
     (scene: Phaser.Scene, row: number) =>
     (idx: number, uiState: UIState, actor: Actor): UIState => {
-      const supplier = () => PlayerDisplay.newPlayerDisplay(scene, idx, row)
+      const supplier = () => PlayerDisplay.newPlayerDisplay(scene, idx, row, actor.id)
+
       const [playerDisplays, display] = Dictionary.getOrCreate(
         uiState.playerDisplays,
         actor.id,

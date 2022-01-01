@@ -6,6 +6,7 @@ const collectAndFilter = function <K extends string, V>(
   dict: Record<K, V>,
   filter: Predicate<V>,
 ): V[] {
+  //TODO: figure out a way to extact this, i've got it copied
   const collectValues = pipe((_key: string, value: V) => value, record.collect(string.Ord))
   return pipe(dict, collectValues, array.filter(filter))
 }
