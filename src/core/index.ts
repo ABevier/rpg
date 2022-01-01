@@ -10,7 +10,11 @@ const state = State.newBattleState(
     { id: '2', name: 'Alice', hp: 100, maxHp: 120, team: Team.Player },
     { id: '3', name: 'Eugene', hp: 150, maxHp: 150, team: Team.Player },
   ],
-  [Enemies.newEnemyActor('e1', EnemyType.Goblin), { ...Enemies.newEnemyActor('e2', EnemyType.Goblin), hp: 28 }, Enemies.newEnemyActor('e3', EnemyType.Goblin)],
+  [
+    Enemies.newEnemyActor('e1', EnemyType.Goblin),
+    { ...Enemies.newEnemyActor('e2', EnemyType.Goblin), hp: 28 },
+    Enemies.newEnemyActor('e3', EnemyType.Goblin),
+  ],
 )
 
 const commands = [

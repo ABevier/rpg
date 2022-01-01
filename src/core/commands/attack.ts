@@ -9,7 +9,10 @@ const apply = (state: State, source: Actor, targetId: string): CommandResult => 
     State.lookupActorById(state, targetId),
     option.filter(Actor.isAlive),
     option.map((target) => applyAttack(state, source, target)),
-    option.getOrElse(() => ({ state, text: `${source.name}(${source.id}) attacked. it's ineffective.` })),
+    option.getOrElse(() => ({
+      state,
+      text: `${source.name}(${source.id}) attacked. it's ineffective.`,
+    })),
   )
 }
 

@@ -11,7 +11,10 @@ const textStyle = { font: '22px Courier', color: '#DCDCDC' }
 
 const newPlayerDisplay = (parent: Phaser.Scene, column: number, row: number): PlayerDisplay => {
   const container = parent.add.container(100 + column * 250, 100 + row * 150)
-  const background = new Phaser.GameObjects.Rectangle(parent, 0, 0, 200, 80, 0x0000ff).setOrigin(0, 0)
+  const background = new Phaser.GameObjects.Rectangle(parent, 0, 0, 200, 80, 0x0000ff).setOrigin(
+    0,
+    0,
+  )
   container.add(background)
 
   const nameLabel = new Phaser.GameObjects.Text(parent, 10, 10, '', titleStyle).setOrigin(0, 0)

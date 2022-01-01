@@ -1,4 +1,4 @@
-import { option, record, string, array } from 'fp-ts'
+import { option, array } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
 import { lookup, upsertAt } from 'fp-ts/Record'
 import { Actor, Team } from './actors/actor'

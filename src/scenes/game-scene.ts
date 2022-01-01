@@ -56,18 +56,28 @@ export class GameScene extends Phaser.Scene {
   }
 
   private renderPlayers = (scene: Phaser.Scene, state: State) => (uiState: UIState) => {
-    return pipe(State.getPlayerActors(state), array.reduceWithIndex(uiState, this.updateDisplayState(scene, 1)))
+    return pipe(
+      State.getPlayerActors(state),
+      array.reduceWithIndex(uiState, this.updateDisplayState(scene, 1)),
+    )
   }
 
   private renderEnemies = (scene: Phaser.Scene, state: State) => (uiState: UIState) => {
-    return pipe(State.getEnemyActors(state), array.reduceWithIndex(uiState, this.updateDisplayState(scene, 0)))
+    return pipe(
+      State.getEnemyActors(state),
+      array.reduceWithIndex(uiState, this.updateDisplayState(scene, 0)),
+    )
   }
 
   private updateDisplayState =
     (scene: Phaser.Scene, row: number) =>
     (idx: number, uiState: UIState, actor: Actor): UIState => {
       const supplier = () => PlayerDisplay.newPlayerDisplay(scene, idx, row)
-      const [playerDisplays, display] = Dictionary.getOrCreate(uiState.playerDisplays, actor.id, supplier)
+      const [playerDisplays, display] = Dictionary.getOrCreate(
+        uiState.playerDisplays,
+        actor.id,
+        supplier,
+      )
 
       PlayerDisplay.updateDisplay(display, actor)
 
