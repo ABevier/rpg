@@ -1,10 +1,11 @@
-import { array, record, string } from 'fp-ts'
+import { array } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
+import { Dictionary } from '../core/utils/dictionary'
 import { UIState } from '../scenes/game-scene'
 import { PlayerDisplay } from '../scenes/PlayerDisplay'
 import { MenuButton, MenuButtonProps } from './menu-button'
 
-const getOneClick = <T>(buttons: MenuButton<T>[]): Promise<T> => {
+const getOneMenuClick = <T>(buttons: MenuButton<T>[]): Promise<T> => {
   const doRace = async (promises: Promise<T>[]) => {
     const p = await Promise.race(promises)
     buttons.forEach(MenuButton.destroy)
@@ -19,20 +20,23 @@ const getMenuSelection = <T>(scene: Phaser.Scene, items: MenuButtonProps<T>[]): 
     return MenuButton.newMenuButton(scene, 500, 100 + 35 * i, item)
   }
 
-  return pipe(items, array.mapWithIndex(makeButton), getOneClick)
+  return pipe(items, array.mapWithIndex(makeButton), getOneMenuClick)
 }
 
 ////
 //
+const getOneEnemyClick = (displays: PlayerDisplay[]): Promise<string> => {
+  const doRace = async (promises: Promise<string>[]) => {
+    const p = await Promise.race(promises)
+    displays.forEach(PlayerDisplay.disableInteractive)
+    return p
+  }
+
+  return pipe(displays, array.map(PlayerDisplay.getClick), doRace)
+}
 
 const getEnemyClick = (uiState: UIState): Promise<string> => {
-  const collectValues = pipe(
-    (_key: string, value: PlayerDisplay) => value,
-    record.collect(string.Ord),
-  )
-
-  const promises = pipe(uiState.playerDisplays, collectValues, array.map(PlayerDisplay.getClick))
-  return Promise.race(promises)
+  return pipe(uiState.playerDisplays, Dictionary.collectValues, getOneEnemyClick)
 }
 
 export const Menu = {

@@ -41,7 +41,6 @@ const updateDisplay = (display: PlayerDisplay, actor: Actor): void => {
 
 const getClick = async (display: PlayerDisplay): Promise<string> => {
   display.background.setInteractive({ useHandCursor: true })
-  //TODO: TURN OFF INTERACTIVE AFTER THE CLICK
   return new Promise<string>((resolve, _reject) => {
     display.background.on('pointerup', () => {
       resolve(display.id)
@@ -49,8 +48,13 @@ const getClick = async (display: PlayerDisplay): Promise<string> => {
   })
 }
 
+const disableInteractive = (display: PlayerDisplay): void => {
+  display.background.disableInteractive()
+}
+
 export const PlayerDisplay = {
   newPlayerDisplay,
   updateDisplay,
   getClick,
+  disableInteractive,
 }

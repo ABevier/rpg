@@ -2,12 +2,12 @@ import { array, option, record, string } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
 import { Predicate } from 'fp-ts/lib/Predicate'
 
-const collectAndFilter = function <K extends string, V>(
-  dict: Record<K, V>,
-  filter: Predicate<V>,
-): V[] {
-  //TODO: figure out a way to extact this, i've got it copied
-  const collectValues = pipe((_key: string, value: V) => value, record.collect(string.Ord))
+const collectValues = function <V>(dict: Record<string, V>): V[] {
+  const collect = pipe((_key: string, value: V) => value, record.collect(string.Ord))
+  return pipe(dict, collect)
+}
+
+const collectAndFilter = function <V>(dict: Record<string, V>, filter: Predicate<V>): V[] {
   return pipe(dict, collectValues, array.filter(filter))
 }
 
@@ -30,6 +30,7 @@ const getOrCreate = function <K extends string, V>(
 }
 
 export const Dictionary = {
+  collectValues,
   collectAndFilter,
   getOrCreate,
 }

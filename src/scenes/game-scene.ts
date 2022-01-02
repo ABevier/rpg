@@ -2,6 +2,8 @@ import { array } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
 import { Actor, Team } from '../core/actors/actor'
 import { Enemies, EnemyType } from '../core/actors/enemies/enemies'
+import { Command } from '../core/commands/command'
+import { CommandType } from '../core/commands/commandType'
 import { State } from '../core/state'
 import { Dictionary } from '../core/utils/dictionary'
 import { Menu } from '../ui/menu'
@@ -40,10 +42,10 @@ export class GameScene extends Phaser.Scene {
     const newUIState = this.renderBattle(state, initialUI)
     console.log(newUIState)
 
-    this.driver(this, newUIState)
+    this.driver(this, newUIState, state)
   }
 
-  private driver = async (scene: Phaser.Scene, uiState: UIState): Promise<void> => {
+  private driver = async (scene: Phaser.Scene, uiState: UIState, state: State): Promise<void> => {
     const value = await Menu.getMenuSelection(scene, [
       { text: '1', value: 1 },
       { text: '2', value: 2 },
@@ -53,6 +55,11 @@ export class GameScene extends Phaser.Scene {
 
     const targetId = await Menu.getEnemyClick(uiState)
     console.log(`selected target = ${targetId}`)
+
+    const command = { speed: 10, sourceId: '1', targetId, type: CommandType.Attack }
+
+    const { state: newState } = Command.executeCommand(state, command)
+    this.renderBattle(newState, uiState)
   }
 
   //public update(): void {}
