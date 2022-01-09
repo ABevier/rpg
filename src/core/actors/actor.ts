@@ -1,3 +1,5 @@
+import { CommandType } from '../commands/commandType'
+
 export enum Team {
   Player = 'player',
   Enemy = 'enemy',
@@ -9,6 +11,8 @@ export interface Actor {
   team: Team
   hp: number
   maxHp: number
+  // A list of actions the actor could take
+  moves: CommandType[]
 }
 
 const applyDamage = (actor: Actor, amount: number): Actor => {

@@ -6,9 +6,30 @@ import { State } from './state'
 
 const state = State.newBattleState(
   [
-    { id: '1', name: 'Bob', hp: 29, maxHp: 120, team: Team.Player },
-    { id: '2', name: 'Alice', hp: 100, maxHp: 120, team: Team.Player },
-    { id: '3', name: 'Eugene', hp: 150, maxHp: 150, team: Team.Player },
+    {
+      id: '1',
+      name: 'Bob',
+      hp: 29,
+      maxHp: 120,
+      team: Team.Player,
+      moves: [CommandType.Attack, CommandType.Defend],
+    },
+    {
+      id: '2',
+      name: 'Alice',
+      hp: 100,
+      maxHp: 120,
+      team: Team.Player,
+      moves: [CommandType.Attack, CommandType.Defend],
+    },
+    {
+      id: '3',
+      name: 'Eugene',
+      hp: 150,
+      maxHp: 150,
+      team: Team.Player,
+      moves: [CommandType.Attack, CommandType.Defend],
+    },
   ],
   [
     Enemies.newEnemyActor('e1', EnemyType.Goblin),

@@ -1,3 +1,4 @@
+import { CommandType } from '../../commands/commandType'
 import { Actor, Team } from '../actor'
 
 export enum EnemyType {
@@ -7,6 +8,7 @@ export enum EnemyType {
 export type EnemySpec = {
   name: string
   maxHp: number
+  moves: CommandType[]
 }
 
 export type EnemyMap = Record<EnemyType, EnemySpec>
@@ -15,6 +17,7 @@ const enemies: EnemyMap = {
   goblin: {
     name: 'Goblin',
     maxHp: 80,
+    moves: [CommandType.Attack],
   },
 }
 

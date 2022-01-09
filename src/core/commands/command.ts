@@ -7,6 +7,7 @@ import { State } from '../state'
 import { Attack } from './attack'
 import { CommandType } from './commandType'
 import { Actor } from '../actors/actor'
+import { Defend } from './defend'
 
 export interface Command {
   speed: number
@@ -27,6 +28,7 @@ export type CommandMap = Record<CommandType, CommandFunc>
 
 const commands: CommandMap = {
   attack: Attack.apply,
+  defend: Defend.apply,
 }
 
 const executeCommand = (state: State, command: Command): CommandResult => {

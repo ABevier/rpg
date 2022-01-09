@@ -2,12 +2,11 @@ import { array } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
 import { Actor, Team } from '../core/actors/actor'
 import { Enemies, EnemyType } from '../core/actors/enemies/enemies'
-import { Command } from '../core/commands/command'
 import { CommandType } from '../core/commands/commandType'
 import { State } from '../core/state'
 import { Dictionary } from '../core/utils/dictionary'
-import { Menu } from '../ui/menu'
 import { PlayerDisplay } from './PlayerDisplay'
+import { Prompter, PromptF } from './prompter'
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -17,6 +16,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 
 export interface UIState {
   playerDisplays: Record<string, PlayerDisplay>
+  //TODO: add an instruction Prompt!!
 }
 
 export class GameScene extends Phaser.Scene {
@@ -27,9 +27,30 @@ export class GameScene extends Phaser.Scene {
   public create(): void {
     const state = State.newBattleState(
       [
-        { id: '1', name: 'Bob', hp: 29, maxHp: 120, team: Team.Player },
-        { id: '2', name: 'Alice', hp: 100, maxHp: 120, team: Team.Player },
-        { id: '3', name: 'Eugene', hp: 150, maxHp: 150, team: Team.Player },
+        {
+          id: '1',
+          name: 'Bob',
+          hp: 29,
+          maxHp: 120,
+          team: Team.Player,
+          moves: [CommandType.Attack, CommandType.Defend],
+        },
+        {
+          id: '2',
+          name: 'Alice',
+          hp: 100,
+          maxHp: 120,
+          team: Team.Player,
+          moves: [CommandType.Attack, CommandType.Defend],
+        },
+        {
+          id: '3',
+          name: 'Eugene',
+          hp: 150,
+          maxHp: 150,
+          team: Team.Player,
+          moves: [CommandType.Attack, CommandType.Defend],
+        },
       ],
       [
         Enemies.newEnemyActor('e1', EnemyType.Goblin),
@@ -42,24 +63,13 @@ export class GameScene extends Phaser.Scene {
     const newUIState = this.renderBattle(state, initialUI)
     console.log(newUIState)
 
-    this.driver(this, newUIState, state)
+    const p = Prompter.newPrompter(this)
+    this.driver2(p, newUIState, state)
   }
 
-  private driver = async (scene: Phaser.Scene, uiState: UIState, state: State): Promise<void> => {
-    const value = await Menu.getMenuSelection(scene, [
-      { text: '1', value: 1 },
-      { text: '2', value: 2 },
-      { text: '3', value: 3 },
-    ])
-    console.log(`menu clicked with value ${value}`)
-
-    const targetId = await Menu.getEnemyClick(uiState)
-    console.log(`selected target = ${targetId}`)
-
-    const command = { speed: 10, sourceId: '1', targetId, type: CommandType.Attack }
-
-    const { state: newState } = Command.executeCommand(state, command)
-    this.renderBattle(newState, uiState)
+  public async driver2(prompter: PromptF, uiState: UIState, state: State): Promise<void> {
+    const result = await prompter(state, uiState)
+    console.log('result of prompting is:', result)
   }
 
   //public update(): void {}
