@@ -5,6 +5,7 @@ import { Enemies, EnemyType } from '../core/actors/enemies/enemies'
 import { CommandType } from '../core/commands/commandType'
 import { State } from '../core/state'
 import { Dictionary } from '../core/utils/dictionary'
+import { Driver } from './driver'
 import { PlayerDisplay } from './PlayerDisplay'
 import { Prompter, PromptF } from './prompter'
 
@@ -15,6 +16,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 }
 
 export interface UIState {
+  //TODO: ADD the scene here!!!
+
   playerDisplays: Record<string, PlayerDisplay>
   //TODO: add an instruction Prompt!!
 }
@@ -63,13 +66,8 @@ export class GameScene extends Phaser.Scene {
     const newUIState = this.renderBattle(state, initialUI)
     console.log(newUIState)
 
-    const p = Prompter.newPrompter(this)
-    this.driver2(p, newUIState, state)
-  }
-
-  public async driver2(prompter: PromptF, uiState: UIState, state: State): Promise<void> {
-    const result = await prompter(state, uiState)
-    console.log('result of prompting is:', result)
+    const prompter = Prompter.newPrompter(this)
+    Driver.run(prompter, newUIState, state)
   }
 
   //public update(): void {}
