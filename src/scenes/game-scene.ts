@@ -16,11 +16,12 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 }
 
 export interface UIState {
-  //TODO: ADD the scene here!!!
-
+  scene: Phaser.Scene
   playerDisplays: Record<string, PlayerDisplay>
   //TODO: add an instruction Prompt!!
 }
+
+export type RenderF = (state: State, uiState: UIState) => UIState
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -62,12 +63,14 @@ export class GameScene extends Phaser.Scene {
       ],
     )
 
-    const initialUI: UIState = { playerDisplays: {} }
+    const initialUI: UIState = { scene: this, playerDisplays: {} }
     const newUIState = this.renderBattle(state, initialUI)
     console.log(newUIState)
 
+    //Get rid of these and make UIState better
     const prompter = Prompter.newPrompter(this)
-    Driver.run(prompter, newUIState, state)
+    const renderer = (s: State, u: UIState) => this.renderBattle(s, u)
+    Driver.run(renderer, prompter, newUIState, state)
   }
 
   //public update(): void {}

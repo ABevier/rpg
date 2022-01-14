@@ -61,6 +61,13 @@ const promptForTarget = (uiState: UIState, _action: CommandType): Promise<string
   return Menu.getEnemyClick(uiState)
 }
 
+const flashPrompt = (uiState: UIState, text: string, delay: number): Promise<void> => {
+  return new Promise((resolve, _reject) => {
+    uiState.scene.time.delayedCall(delay, resolve)
+  })
+}
+
 export const Prompter = {
   newPrompter,
+  flashPrompt,
 }
