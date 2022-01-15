@@ -15,7 +15,8 @@ const getOneMenuClick = <T>(buttons: MenuButton<T>[]): Promise<T> => {
   return pipe(buttons, array.map(MenuButton.getClick), doRace)
 }
 
-const getMenuSelection = <T>(scene: Phaser.Scene, items: MenuButtonProps<T>[]): Promise<T> => {
+//TODO: how to curry this??
+const getMenuSelection = <T>({ scene }: UIState, items: MenuButtonProps<T>[]): Promise<T> => {
   const makeButton = (i: number, item: MenuButtonProps<T>) => {
     return MenuButton.newMenuButton(scene, 500, 100 + 35 * i, item)
   }

@@ -1,8 +1,9 @@
 import { array } from 'fp-ts'
 import { Command } from '../core/commands/command'
 import { State } from '../core/state'
-import { RenderF, UIState } from './game-scene'
-import { Prompter, PromptF } from './prompter'
+import { BattleRenderer } from '../ui/battleRenderer'
+import { UIState } from './game-scene'
+import { Prompter } from './prompter'
 
 // The main combat loop should be the following steps:
 // - Prompt for actions from each player character
@@ -11,12 +12,7 @@ import { Prompter, PromptF } from './prompter'
 // - - Render the action result
 // - Restart the loop
 
-const run = async (
-  renderer: RenderF,
-  prompter: PromptF,
-  uiState: UIState,
-  state: State,
-): Promise<void> => {
+const run = async (uiState: UIState, state: State): Promise<void> => {
   // const value = await Menu.getMenuSelection(scene, [
   //   { text: '1', value: 1 },
   //   { text: '2', value: 2 },
@@ -30,37 +26,31 @@ const run = async (
   // this.renderBattle(newState, uiState)
 
   // TODO: need to render the battle!!
-  const result = await prompter(state, uiState)
-  console.log('result of prompting is:', result)
+  const result = await Prompter.promptForCommands(uiState, state)
+  console.log('result of NEWEST prompting is:', result)
 
   //TODO: figure out how to use promises better in fp-ts
   // And empty array checks...
   // I can make a big pipe probably
   const sorted = Command.sortBySpeed(result)
-  applyCommands(sorted, uiState, state, renderer, prompter)
+  applyCommands(sorted, uiState, state)
 }
 
 //TODO: can get rid of prompter and renderer when UIState has a scene
 // - Can just statically call Prompter.promtpt(uiState) and Renderer.render(...) instead of needing to bind
-const applyCommands = async (
-  commands: Command[],
-  uiState: UIState,
-  state: State,
-  renderer: RenderF,
-  prompter: PromptF,
-) => {
+const applyCommands = async (commands: Command[], uiState: UIState, state: State) => {
   if (array.isEmpty(commands)) {
-    return run(renderer, prompter, uiState, state)
+    return run(uiState, state)
   }
 
-  // This code is a fucking mess...
+  // TODO: This code is a fucking mess...
   const [command, ...rest] = commands
-  console.log('applying command:', command)
   const result = Command.executeCommand(state, command)
-  console.log(result.text)
+
   await Prompter.flashPrompt(uiState, result.text, 1000)
-  const newUIState = renderer(result.state, uiState)
-  applyCommands(rest, newUIState, result.state, renderer, prompter)
+
+  const newUIState = BattleRenderer.renderBattle(uiState, result.state)
+  applyCommands(rest, newUIState, result.state)
 }
 
 export const Driver = {

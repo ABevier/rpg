@@ -9,6 +9,9 @@ import { CommandType } from './commandType'
 import { Actor } from '../actors/actor'
 import { Defend } from './defend'
 
+// TODO: This shoule be renamed to an ACTION and not a command.
+// A command is basically an action without a speed or any other game logic processing
+// A command is PURELY input
 export interface Command {
   speed: number
   sourceId: string

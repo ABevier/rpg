@@ -1,13 +1,10 @@
-import { array } from 'fp-ts'
-import { pipe } from 'fp-ts/lib/function'
-import { Actor, Team } from '../core/actors/actor'
+import { Team } from '../core/actors/actor'
 import { Enemies, EnemyType } from '../core/actors/enemies/enemies'
 import { CommandType } from '../core/commands/commandType'
 import { State } from '../core/state'
-import { Dictionary } from '../core/utils/dictionary'
+import { BattleRenderer } from '../ui/battleRenderer'
 import { Driver } from './driver'
 import { PlayerDisplay } from './PlayerDisplay'
-import { Prompter, PromptF } from './prompter'
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -20,8 +17,6 @@ export interface UIState {
   playerDisplays: Record<string, PlayerDisplay>
   //TODO: add an instruction Prompt!!
 }
-
-export type RenderF = (state: State, uiState: UIState) => UIState
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -64,49 +59,10 @@ export class GameScene extends Phaser.Scene {
     )
 
     const initialUI: UIState = { scene: this, playerDisplays: {} }
-    const newUIState = this.renderBattle(state, initialUI)
+    const newUIState = BattleRenderer.renderBattle(initialUI, state)
     console.log(newUIState)
 
-    //Get rid of these and make UIState better
-    const prompter = Prompter.newPrompter(this)
-    const renderer = (s: State, u: UIState) => this.renderBattle(s, u)
-    Driver.run(renderer, prompter, newUIState, state)
+    //TODO: find a better place to kick this off??
+    Driver.run(newUIState, state)
   }
-
-  //public update(): void {}
-
-  //TODO: Move this code out to a renderer or something, all the `this`'s are killing me
-  public renderBattle(state: State, uiState: UIState): UIState {
-    return pipe(uiState, this.renderPlayers(this, state), this.renderEnemies(this, state))
-  }
-
-  private renderPlayers = (scene: Phaser.Scene, state: State) => (uiState: UIState) => {
-    return pipe(
-      State.getPlayerActors(state),
-      array.reduceWithIndex(uiState, this.updateDisplayState(scene, 1)),
-    )
-  }
-
-  private renderEnemies = (scene: Phaser.Scene, state: State) => (uiState: UIState) => {
-    return pipe(
-      State.getEnemyActors(state),
-      array.reduceWithIndex(uiState, this.updateDisplayState(scene, 0)),
-    )
-  }
-
-  private updateDisplayState =
-    (scene: Phaser.Scene, row: number) =>
-    (idx: number, uiState: UIState, actor: Actor): UIState => {
-      const supplier = () => PlayerDisplay.newPlayerDisplay(scene, idx, row, actor.id)
-
-      const [playerDisplays, display] = Dictionary.getOrCreate(
-        uiState.playerDisplays,
-        actor.id,
-        supplier,
-      )
-
-      PlayerDisplay.updateDisplay(display, actor)
-
-      return { ...uiState, playerDisplays }
-    }
 }
