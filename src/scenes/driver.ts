@@ -58,7 +58,7 @@ const applyCommands = async (
   console.log('applying command:', command)
   const result = Command.executeCommand(state, command)
   console.log(result.text)
-  await Prompter.flashPrompt(uiState, result.text, 800)
+  await Prompter.flashPrompt(uiState, result.text, 1000)
   const newUIState = renderer(result.state, uiState)
   applyCommands(rest, newUIState, result.state, renderer, prompter)
 }

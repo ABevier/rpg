@@ -6,6 +6,7 @@ import { CommandType } from '../core/commands/commandType'
 import { State } from '../core/state'
 import { Menu } from '../ui/menu'
 import { MenuButtonProps } from '../ui/menu-button'
+import { TextArea } from '../ui/text-area'
 import { UIState } from './game-scene'
 
 export type PromptF = (state: State, uiState: UIState) => Promise<Command[]>
@@ -61,10 +62,19 @@ const promptForTarget = (uiState: UIState, _action: CommandType): Promise<string
   return Menu.getEnemyClick(uiState)
 }
 
-const flashPrompt = (uiState: UIState, text: string, delay: number): Promise<void> => {
+const delay = (uiState: UIState, time: number): Promise<UIState> => {
   return new Promise((resolve, _reject) => {
-    uiState.scene.time.delayedCall(delay, resolve)
+    uiState.scene.time.delayedCall(time, () => resolve(uiState))
   })
+}
+
+const flashPrompt = async (uiState: UIState, text: string, time: number): Promise<void> => {
+  const textArea = TextArea.newTextArea(uiState, { text, x: 100, y: 500 })
+  await delay(uiState, time)
+  TextArea.destroy(textArea)
+
+  //TODO: probably get rid of this and add a real transition?
+  await delay(uiState, 200)
 }
 
 export const Prompter = {
