@@ -1,4 +1,7 @@
 import { array } from 'fp-ts'
+import { pipe } from 'fp-ts/lib/function'
+import { Actor } from '../core/actors/actor'
+import { Enemies } from '../core/actors/enemies/enemies'
 import { Command } from '../core/commands/command'
 import { State } from '../core/state'
 import { BattleRenderer } from '../ui/battleRenderer'
@@ -14,13 +17,17 @@ import { Prompter } from './prompter'
 // - Restart the loop
 
 const run = async (uiState: UIState, state: State): Promise<void> => {
-  const result = await Prompter.promptForCommands(uiState, state)
-  console.log('result of NEWEST prompting is:', result)
-
   //TODO: figure out how to use promises better in fp-ts
   // And empty array checks...
-  // I can make a big pipe probably
-  const sorted = Command.sortBySpeed(result)
+  // I can this function make a big pipe probably
+  const playerCommands = await Prompter.promptForCommands(uiState, state)
+  const enemyCommands = pipe(
+    state,
+    State.getEnemyActors,
+    array.filter(Actor.isAlive),
+    array.map(Enemies.chooseCommand(state)),
+  )
+  const sorted = Command.sortBySpeed([...playerCommands, ...enemyCommands])
   applyCommands(sorted, uiState, state)
 }
 

@@ -2,6 +2,7 @@ import { option, array } from 'fp-ts'
 import { pipe } from 'fp-ts/lib/function'
 import { lookup, upsertAt } from 'fp-ts/Record'
 import { Actor, Team } from './actors/actor'
+import { EnemyActor } from './actors/enemies/enemies'
 import { Command, CommandResult } from './commands/command'
 import { Dictionary } from './utils/dictionary'
 
@@ -30,8 +31,11 @@ const getPlayerActors = (state: State): Actor[] => {
   return Dictionary.collectAndFilter(state.actors, (actor) => actor.team === Team.Player)
 }
 
-const getEnemyActors = (state: State): Actor[] => {
-  return Dictionary.collectAndFilter(state.actors, (actor) => actor.team === Team.Enemy)
+const getEnemyActors = (state: State): EnemyActor[] => {
+  return Dictionary.collectAndFilter(
+    state.actors,
+    (actor) => actor.team === Team.Enemy,
+  ) as EnemyActor[]
 }
 
 //TODO: keep a map?
