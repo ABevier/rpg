@@ -2,7 +2,11 @@
 
 Current Goal: Fully playable turns
 
-- Enemies will attack back
+- Dead actors don't get prompted for commands
+- Show an instruction when picking a command or targeting
+- highlight currently "active" player actor (when selecting)
+- play animations? Bouncing Health and/or a slash?
+
 - Check for win conditions
 - Target handling (Make sure commands can only attack the correct target)
 
